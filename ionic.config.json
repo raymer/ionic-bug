@@ -1,0 +1,8 @@
+{
+  "name": "ionic-bug",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue",
+  "id": "34e2a93a"
+}
