@@ -1,70 +1,37 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-menu-button color="primary"></ion-menu-button>
-        </ion-buttons>
-        <ion-title>{{ $route.params.id }}</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">{{ $route.params.id }}</ion-title>
-        </ion-toolbar>
-      </ion-header>
-    
-      <div id="container">
-        <strong class="capitalize">{{ $route.params.id }}</strong>
-        <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-      </div>
+    <ion-content :fullscreen="true" color="light">
+      <div>Click this ellipsis</div>
+      <ion-button @click="setOpen(true, $event)" shape="round" fill="clear" color="dark" size="small">
+        <ion-icon :icon="ellipsisVertical"></ion-icon>
+      </ion-button>
+      <ion-popover :is-open="isOpen" :event="locationEvent" :dismissOnSelect="true" @didDismiss="setOpen(false)">
+        <ion-item class="context-item" lines="full" @click="openModal">Test</ion-item>
+      </ion-popover>
     </ion-content>
   </ion-page>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+<script lang="ts" setup>
+import { ref } from 'vue'
+import { IonButton, IonPopover, IonIcon, IonPage, IonContent, modalController, IonItem } from '@ionic/vue';
+import { ellipsisVertical } from 'ionicons/icons';
+import ModalVue from './Modal.vue';
 
-export default defineComponent({
-  name: 'FolderPage',
-  components: {
-    IonButtons,
-    IonContent,
-    IonHeader,
-    IonMenuButton,
-    IonPage,
-    IonTitle,
-    IonToolbar
-  }
-});
+const isOpen = ref(false);
+const locationEvent = ref<Event>();
+
+function setOpen(state: boolean, event?: Event) {
+  locationEvent.value = event;
+  isOpen.value = state;
+}
+
+const openModal = async () => {
+  const modal = await modalController
+    .create({
+      component: ModalVue
+    })
+  modal.present();
+  await modal.onDidDismiss();
+}
 </script>
-
-<style scoped>
-#container {
-  text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  color: #8c8c8c;
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
-}
-</style>
