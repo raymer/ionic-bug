@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <ion-content :fullscreen="true" color="light">
-      <div>Click this ellipsis</div>
+      <div>Click this ellipsis and click the "test" option</div>
       <ion-button @click="setOpen(true, $event)" shape="round" fill="clear" color="dark" size="small">
         <ion-icon :icon="ellipsisVertical"></ion-icon>
       </ion-button>
